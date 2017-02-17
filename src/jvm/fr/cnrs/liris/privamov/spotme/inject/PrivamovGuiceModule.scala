@@ -43,7 +43,6 @@ object PrivamovGuiceModule extends TwitterModule {
   override protected def configure(): Unit = {
     val stores = ScalaMapBinder.newMapBinder[String, EventStoreFactory](binder)
     stores.addBinding("privamov").to[PrivamovStoreFactory]
-
     bind[Firewall].to[FleetFirewall]
   }
 

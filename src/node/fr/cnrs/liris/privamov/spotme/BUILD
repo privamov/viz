@@ -1,4 +1,4 @@
 resources(
   name='assets',
-  sources=globs('*.html', '*.ico', '*.js', 'css/*', 'images/*')
+  sources=globs('*.html', '*.ico', '*.js', 'css/*', 'images/*', 'fonts/*')
 )

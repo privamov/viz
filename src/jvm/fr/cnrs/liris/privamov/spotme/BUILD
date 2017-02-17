@@ -13,6 +13,9 @@ scala_library(
   resources=[
     'src/node/fr/cnrs/liris/privamov/spotme:assets',
   ],
+  excludes=[
+    exclude('commons-logging', 'commons-logging'),
+  ],
   sources=rglobs('*.scala')
 )
 

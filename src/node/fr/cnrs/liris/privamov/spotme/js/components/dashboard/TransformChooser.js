@@ -1,6 +1,7 @@
 const React = require('react');
+const _ = require('lodash');
 
-let LocationTransform = React.createClass({
+let TransformChooser = React.createClass({
   handleRawClick: function (e) {
     e.preventDefault();
     this.setState({active: 'raw'});
@@ -92,8 +93,8 @@ let LocationTransform = React.createClass({
   }
 });
 
-LocationTransform.propTypes = {
+TransformChooser.propTypes = {
   onChange: React.PropTypes.func
 };
 
-module.exports = LocationTransform;
+module.exports = TransformChooser;

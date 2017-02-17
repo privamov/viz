@@ -19,11 +19,11 @@ let LocationMapContainer = React.createClass({
       end_before: props.day.clone().endOf('day').format(),
       sample: true
     };
-    if (props) {
+    if (props.type) {
       data.transform = props.type + '=' + props.param;
     }
     this._loadGeoJsonRequest = $.ajax({
-      url: window.Viz.apiEndpoint + '/datasets/' + props.dataset + '/features',
+      url: '/api/datasets/' + props.dataset + '/features',
       data: data,
       success: (json) => {
         this.setState({data: json});

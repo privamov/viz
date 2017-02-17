@@ -11,10 +11,6 @@ const App = React.createClass({
               <a className="navbar-brand" href="/">Priva'Mov Viz</a>
             </div>
 
-            <ul className="nav navbar-nav left">
-              <li><Link to="/" activeClassName="active">Dashboard</Link></li>
-            </ul>
-
             <ul className="nav navbar-nav navbar-right">
               <li><a href="http://privamov.liris.cnrs.fr">
                 <span className="glyphicon glyphicon-home"/> Project website

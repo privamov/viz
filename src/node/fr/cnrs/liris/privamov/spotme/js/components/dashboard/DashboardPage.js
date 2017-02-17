@@ -16,7 +16,6 @@ let LocationPage = React.createClass({
   getDefaultProps: function () {
     return {
       dataset: window.Viz.dataset,
-      accessToken: window.Viz.accessToken
     };
   },
 
@@ -25,7 +24,7 @@ let LocationPage = React.createClass({
   },
 
   _handleTransformChange: function (type, param) {
-    var transform = type ? {type: type, param: param} : null;
+    const transform = type ? {type: type, param: param} : null;
     this.setState({transform: transform});
   },
 
@@ -36,6 +35,7 @@ let LocationPage = React.createClass({
           <div className="col-sm-2">
             <LocationCalendarContainer
               {...this.props}
+              accessToken={this.props.params.token}
               onChange={this._handleCalendarChange}/>
             <hr/>
             <TransformChooser onChange={this._handleTransformChange}/>
@@ -43,6 +43,7 @@ let LocationPage = React.createClass({
           <div className="col-sm-10">
             <LocationMapContainer
               {...this.props}
+              accessToken={this.props.params.token}
               day={this.state.day}
               transform={this.state.transform}/>
           </div>
@@ -54,7 +55,6 @@ let LocationPage = React.createClass({
 
 LocationPage.propTypes = {
   dataset: React.PropTypes.string.isRequired,
-  accessToken: React.PropTypes.string.isRequired
 };
 
 module.exports = LocationPage;

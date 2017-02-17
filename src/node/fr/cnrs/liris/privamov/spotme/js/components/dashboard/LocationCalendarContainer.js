@@ -20,11 +20,11 @@ let LocationCalendarContainer = React.createClass({
 
   _loadActiveDays: function () {
     this._loadActiveDaysRequest = $.ajax({
-      url: window.Viz.apiEndpoint + '/datasets/' + this.props.dataset + '/sources',
+      url: '/api/datasets/' + this.props.dataset + '/sources',
       data: {access_token: this.props.accessToken},
       success: (json) => {
         this._loadActiveDaysRequest = $.ajax({
-          url: window.Viz.apiEndpoint + '/datasets/' + this.props.dataset + '/sources/' + json[0],
+          url: '/api/datasets/' + this.props.dataset + '/sources/' + json[0],
           data: {access_token: this.props.accessToken},
           success: (json) => {
             var activeDays = _.map(json.active_days, (v) => moment(v));

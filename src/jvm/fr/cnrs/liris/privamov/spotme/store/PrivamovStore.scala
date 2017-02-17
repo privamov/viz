@@ -70,7 +70,6 @@ class PrivamovStore(evaluator: QueryEvaluator, override val name: String) extend
         sql = s"select * from ($sql) q where rnum % $outOf < 1"
       }
     }
-    //println(sql)
 
     evaluator.select(sql) { rs =>
       val imei = uuidToImei(rs.getString(4))

@@ -8,11 +8,13 @@ var _ = require('lodash');
 
 var App = require('./components/App');
 var DashboardPage = require('./components/dashboard/DashboardPage');
+var LoginPage = require('./components/login/LoginPage');
 
 ReactDOM.render((
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <IndexRoute component={DashboardPage}/>
+      <IndexRoute component={LoginPage}/>
+      <Route path="view/:token" component={DashboardPage}/>
     </Route>
   </Router>
 ), document.getElementById('body'));
