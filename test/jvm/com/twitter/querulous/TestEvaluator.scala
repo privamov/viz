@@ -1,0 +1,79 @@
+package com.twitter.querulous
+
+import java.io.{File, FileNotFoundException}
+import java.util.concurrent.CountDownLatch
+
+import com.twitter.querulous.config.Connection
+import com.twitter.querulous.database.SingleConnectionDatabaseFactory
+import com.twitter.querulous.evaluator.{QueryEvaluator, StandardQueryEvaluatorFactory}
+import com.twitter.querulous.query.SqlQueryFactory
+import com.twitter.util.Eval
+import fr.cnrs.liris.testing.UnitSpec
+
+trait ConfiguredSpecification extends UnitSpec {
+  lazy val config = try {
+    val eval = new Eval
+    // if this repo is embedded in other repo (eg. birdcage), test.scala will be
+    // one level deeper than if running in a detached repo mode.
+    val configFile =
+      Some(new File("querulous/config/test.scala")) filter {
+        _.exists
+      } orElse {
+        Some(new File("config/test.scala")) filter {
+          _.exists
+        }
+      } getOrElse {
+        throw new FileNotFoundException("config/test.scala")
+      }
+    eval[Connection](configFile)
+  } catch {
+    case e: Throwable =>
+      e.printStackTrace()
+      throw e
+  }
+
+  /**
+   * Wrap a test in this method to prevent it from running when on the CI machine.
+   * Some tests require a local mysqld, and will fail if executed on the CI machine.
+   */
+  def skipIfCI(f: => Unit): Unit = {
+    if (sys.env.contains("SBT_CI")) {
+      println("skipping on CI machine")
+    } else {
+      f
+    }
+  }
+}
+
+object TestEvaluator {
+  //  val testDatabaseFactory = new MemoizingDatabaseFactory()
+  val testDatabaseFactory = new SingleConnectionDatabaseFactory
+  val testQueryFactory = new SqlQueryFactory
+  val testEvaluatorFactory = new StandardQueryEvaluatorFactory(testDatabaseFactory, testQueryFactory)
+
+  private val userEnv = System.getenv("DB_USERNAME")
+  private val passEnv = System.getenv("DB_PASSWORD")
+
+  def getDbLock(queryEvaluator: QueryEvaluator, lockName: String): CountDownLatch = {
+    val returnLatch = new CountDownLatch(1)
+    val releaseLatch = new CountDownLatch(1)
+
+    val thread = new Thread() {
+      override def run(): Unit = {
+        queryEvaluator.select("SELECT GET_LOCK('" + lockName + "', 1) AS rv") { row =>
+          returnLatch.countDown()
+          try {
+            releaseLatch.await()
+          } catch {
+            case _: Throwable =>
+          }
+        }
+      }
+    }
+
+    thread.start()
+    returnLatch.await()
+
+    releaseLatch
+  }
+}

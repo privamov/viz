@@ -1,0 +1,29 @@
+{
+  "id": "privamov.gateway-service:0.1",
+  "image": "privamov/gateway-service",
+  "ports": {
+    "http": {
+      "externalPort": 8888,
+      "internalPort": 8888,
+      "protocol": "tcp"
+    },
+    "http-admin": {
+      "externalPort": 9990,
+      "internalPort": 9990,
+      "protocol": "tcp"
+    }
+  },
+  "command": [
+    "-viz.stores",
+    "privamov"
+  ],
+  "env": {
+    "QUERULOUS__PRIVAMOV_HOST": "db",
+    "QUERULOUS__PRIVAMOV_BASE": "privamov",
+    "QUERULOUS__PRIVAMOV_USER": "priva"
+  },
+  "healthCheck": {
+    "type": "tcp",
+    "port": "http-admin"
+  }
+}
