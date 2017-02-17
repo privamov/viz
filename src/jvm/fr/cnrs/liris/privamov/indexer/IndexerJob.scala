@@ -20,50 +20,42 @@ package fr.cnrs.liris.privamov.indexer
 
 import com.github.nscala_time.time.Imports._
 import com.sksamuel.elastic4s.{ElasticClient, ElasticsearchClientUri}
-import fr.cnrs.liris.common.flags.{Flag, FlagsParser}
+import com.twitter.app.App
 import fr.cnrs.liris.privamov.core.io.{CabspottingSource, GeolifeSource}
-import fr.cnrs.liris.accio.core.api.sparkle.SparkleEnv
+import fr.cnrs.liris.privamov.core.model.Trace
 import org.elasticsearch.common.settings.Settings
-
-case class IndexerFlags(
-  @Flag(name = "type")
-  typ: String,
-  @Flag(name = "timezone")
-  timezone: String = "Europe/Paris",
-  @Flag(name = "elastic_uri")
-  elasticUri: String = "localhost:9300")
 
 object IndexerJobMain extends IndexerJob
 
-class IndexerJob {
-  def main(args: Array[String]): Unit = {
-    val flagsParser = FlagsParser[IndexerFlags](allowResidue = true)
-    flagsParser.parseAndExitUponError(args)
-    val flags = flagsParser.as[IndexerFlags]
+class IndexerJob extends App {
+  private[this] val typeFlag = flag[String]("type", "Data source type")
+  private[this] val timezoneFlag = flag("timezone", "Europe/Paris", "Data timezone")
+  private[this] val addrFlag = flag("addr", "127.0.0.1:9300", "Elasticsearch URI")
 
+  def main(): Unit = {
     val elasticClient = ElasticClient.transport(
       Settings.builder.put("client.transport.ping_timeout", "30s").build,
-      ElasticsearchClientUri(flags.elasticUri))
+      ElasticsearchClientUri(addrFlag()))
 
-    val env = new SparkleEnv(1)
     val indexer = new Indexer(elasticClient, indexName = "event")
     try {
-      flagsParser.residue.foreach { url =>
-        val dataset = createDataset(env, flags.typ, url)
-        indexer.run(dataset, flags.typ, DateTimeZone.forID(flags.timezone))
+      args.foreach { url =>
+        val dataset = createDataset(typeFlag(), url)
+        indexer.run(dataset, typeFlag(), DateTimeZone.forID(timezoneFlag()))
       }
     } finally {
       elasticClient.close()
-      env.stop()
     }
   }
 
-  private def createDataset(env: SparkleEnv, typ: String, url: String) = {
+  private def createDataset(typ: String, url: String): Iterable[Trace] = {
     val source = typ match {
       case "cabspotting" => CabspottingSource(url)
       case "geolife" => GeolifeSource(url)
       case _ => throw new IllegalArgumentException(s"Unknown type '$typ'")
     }
-    env.read(source)
+    new Iterable[Trace] {
+      override def iterator: Iterator[Trace] = source.keys.iterator.flatMap(source.read)
+    }
   }
 }

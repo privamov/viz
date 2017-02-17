@@ -1,5 +1,4 @@
 scala_library(
-  name='query',
   dependencies=[
     'src/jvm/fr/cnrs/liris/common/geo:json',
     'src/jvm/fr/cnrs/liris/common/geo:geo',

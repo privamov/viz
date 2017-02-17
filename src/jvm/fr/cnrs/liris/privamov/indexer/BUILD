@@ -1,10 +1,10 @@
 scala_library(
-  name='indexer',
   dependencies=[
-    '3rdparty/jvm/com/sksamuel/elastic4s:core',
-    '3rdparty/jvm/com/typesafe/scala-logging',
     'src/jvm/fr/cnrs/liris/privamov/core/io',
     'src/jvm/com/google/common/geometry',
+    '3rdparty/jvm/com/sksamuel/elastic4s:core',
+    '3rdparty/jvm/com/typesafe/scala-logging',
+    '3rdparty/jvm/com/twitter/util:app',
   ],
   sources=globs('*.scala')
 )

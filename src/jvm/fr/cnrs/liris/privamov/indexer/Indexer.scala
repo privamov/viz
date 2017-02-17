@@ -26,9 +26,8 @@ import com.sksamuel.elastic4s.ElasticClient
 import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.mappings.FieldType._
 import com.typesafe.scalalogging.StrictLogging
-import fr.cnrs.liris.accio.core.api.sparkle.DataFrame
-import fr.cnrs.liris.privamov.core.model.Trace
 import fr.cnrs.liris.common.util.HashUtils
+import fr.cnrs.liris.privamov.core.model.Trace
 import org.elasticsearch.common.geo.GeoPoint
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -64,7 +63,7 @@ class Indexer(client: ElasticClient, indexName: String) extends StrictLogging {
    * @param typ      A mapping type
    * @param timezone A timezone for the elements of the dataset
    */
-  def run(dataset: DataFrame[Trace], typ: String, timezone: DateTimeZone): Unit = {
+  def run(dataset: Iterable[Trace], typ: String, timezone: DateTimeZone): Unit = {
     // First step: ensure the index and mappings are created.
     val preparation = client.execute(indexExists(indexName))
       .map(_.isExists)
