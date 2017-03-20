@@ -78,4 +78,11 @@ trait EventStoreFactory {
    * @param name A name for the event store
    */
   def create(name: String): EventStore
+
+  final protected def requireEnvVar(prefix: String, name: String, variables: String*): Unit = {
+    variables.foreach { v =>
+      require(sys.env.contains(s"${prefix}__${name.toUpperCase}_$v"),
+        s"You must define environment variable ${prefix}__${name.toUpperCase}_$v")
+    }
+  }
 }

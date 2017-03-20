@@ -16,7 +16,7 @@
  * along with Priva'Mov.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package fr.cnrs.liris.privamov.spotme
+package fr.cnrs.liris.privamov.spotme.auth
 
 import com.google.inject.name.Named
 import com.google.inject.{Inject, Singleton}

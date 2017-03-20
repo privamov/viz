@@ -1,0 +1,3 @@
+* Enforce timezones (for now client timezones are used, but they may vary across datasets)
+* Check code for security (SQL injections, etc.)
+* Check views-related code, that seems to be wrongly verified in Postgres data stores

@@ -36,7 +36,12 @@ object SpotmeServerMain extends SpotmeServer
 class SpotmeServer extends HttpServer {
   private[this] val uiFlag = flag("ui", false, "Whether to enable the UI")
 
-  override protected def modules = Seq(SpotmeGuiceModule, PrivamovGuiceModule)
+  override protected def modules = Seq(
+    SpotmeGuiceModule,
+    PrivamovGuiceModule,
+    PostgresGuiceModule,
+    FilesystemGuiceModule,
+    FirewallGuiceModule)
 
   override protected def configureHttp(router: HttpRouter): Unit = {
     router

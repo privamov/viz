@@ -19,7 +19,6 @@
 package fr.cnrs.liris.privamov.spotme.auth
 
 import com.google.inject.{Inject, Singleton}
-import fr.cnrs.liris.privamov.spotme.FleetClient
 
 @Singleton
 class FleetFirewall @Inject()(client: FleetClient) extends Firewall {

@@ -24,25 +24,25 @@ import com.twitter.inject.TwitterModule
 import com.twitter.querulous.database.ApachePoolingDatabaseFactory
 import com.twitter.querulous.evaluator.StandardQueryEvaluatorFactory
 import com.twitter.querulous.query.SqlQueryFactory
-import fr.cnrs.liris.privamov.spotme.store.{EventStoreFactory, PrivamovStoreFactory}
+import fr.cnrs.liris.privamov.spotme.store.{EventStoreFactory, PostgresStoreFactory}
 import net.codingwell.scalaguice.ScalaMapBinder
 
 /**
- * Provide support for Priva'Mov event stores.
+ * Provide support for PostgreSQL/PostGIS event stores.
  *
  * @author Vincent Primault <vincent.primault@liris.cnrs.fr>
  */
-object PrivamovGuiceModule extends TwitterModule {
+object PostgresGuiceModule extends TwitterModule {
   override protected def configure(): Unit = {
     val stores = ScalaMapBinder.newMapBinder[String, EventStoreFactory](binder)
-    stores.addBinding("privamov").to[PrivamovStoreFactory]
+    stores.addBinding("postgres").to[PostgresStoreFactory]
   }
 
   @Provides
-  def providesPrivamovStoreFactory: PrivamovStoreFactory = {
+  def providesPostgresStoreFactory: PostgresStoreFactory = {
     val databaseFactory = new ApachePoolingDatabaseFactory(10, 10, 1.second, 10.millis, false, 60.seconds)
     val queryFactory = new SqlQueryFactory
     val queryEvaluatorFactory = new StandardQueryEvaluatorFactory(databaseFactory, queryFactory)
-    new PrivamovStoreFactory(queryEvaluatorFactory)
+    new PostgresStoreFactory(queryEvaluatorFactory)
   }
 }
