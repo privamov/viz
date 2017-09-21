@@ -72,13 +72,11 @@ Each store is then configured with environment variables, depending on its type.
    * `FILESYSTEM__${UPPER_CASE_STORE_NAME}_ROOT`
 
 ## Command-line parameters reference
-Here is the list of all command-line parameters supported by SpotME.
 
-  * ` -viz.stores`: List of configured stores.
-  * `-viz.firewall`: Firewall to use, either `none` or `fleet`. If the Fleet firewall is used, the lending token will be converted into a valid source, restricted in time to only the lending duration, by using the [Fleet API](https://github.com/privamov/fleet).
-  * `-viz.fleet_server`: Address of the Fleet server to use, by default the live one, hosted at LIRIS.
-  * `-viz.standard_limit`: Maximum number of elements that can be retrieved in standard listings.
+Here is the list of all command-line parameters supported by SpotME.
+  * ` -viz.stores`: List of configured stores.
+  * `-viz.firewall`: Firewall to use, either `none` or `fleet`. If the Fleet firewall is used, the lending token will be converted into a valid source, restricted in time to only the lending duration, by using the [Fleet API](https://github.com/privamov/fleet).
+  * `-viz.fleet_server`: Address of the Fleet server to use, by default the live one, hosted at LIRIS.
+  * `-viz.standard_limit`: Maximum number of elements that can be retrieved in standard listings.
   * `-viz.extended_limit`: Maximum number of elements that can be retrieved in extended listings (i.e., when listing features).
   * `-ui`: Whether to enable the built-in visualization tool.
-  
- 
