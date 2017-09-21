@@ -62,16 +62,17 @@ Each store is then configured with environment variables, depending on its type.
   * `QUERULOUS__${UPPER_CASE_STORE_NAME}_USER`
   * `QUERULOUS__${UPPER_CASE_STORE_NAME}_PASS`
 
-## Postgres data store
+### Postgres data store
   * `QUERULOUS__${UPPER_CASE_STORE_NAME}_HOST`
   * `QUERULOUS__${UPPER_CASE_STORE_NAME}_BASE`
   * `QUERULOUS__${UPPER_CASE_STORE_NAME}_USER`
   * `QUERULOUS__${UPPER_CASE_STORE_NAME}_PASS`
  
- ## Filesystem data store
+### Filesystem data store
    * `FILESYSTEM__${UPPER_CASE_STORE_NAME}_ROOT`
 
 ## Command-line parameters reference
+Here is the list of all command-line parameters supported by SpotME.
 
   * ` -viz.stores`: List of configured stores.
   * `-viz.firewall`: Firewall to use, either `none` or `fleet`. If the Fleet firewall is used, the lending token will be converted into a valid source, restricted in time to only the lending duration, by using the [Fleet API](https://github.com/privamov/fleet).
